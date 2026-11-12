@@ -49,7 +49,7 @@
             margin: 0;
             padding: 0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            transition: background-color 0.3s, color 0.3s, border-color 0.3s, box-shadow 0.3s, opacity 0.3s;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s, box-shadow 0.3s, opacity 0.5s ease, transform 0.5s ease;
         }
         body {
             background-color: var(--bg-color);
@@ -97,7 +97,7 @@
         .flashlight {
             position: fixed; width: 32px; height: 72px; z-index: 90;
             cursor: pointer; display: none; transform-origin: 50% 0%;
-            transition: filter 0.3s;
+            transition: filter 0.3s, opacity 0.5s ease, transform 0.5s ease;
         }
         #flashlightLeft { top: -12px; left: -25px; }
         .flash-body { transition: fill 0.3s; }
@@ -211,13 +211,11 @@
             gap: 10px;
             z-index: 2000;
             
-            /* Начальное состояние для анимации */
             opacity: 0;
             transform: translateX(50px) scale(0.95);
             pointer-events: none;
             transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
-        
         .toast-notification.show {
             opacity: 1;
             transform: translateX(0) scale(1);
@@ -247,6 +245,7 @@
             -webkit-backdrop-filter: var(--glass-blur);
             box-shadow: 0 8px 32px var(--shadow-color);
             transition: all 0.3s ease;
+            z-index: 20; /* Поверх zen-mode */
         }
         .search-wrapper:focus-within { border-color: var(--accent-color); box-shadow: 0 0 20px var(--accent-color); }
         .engine-select {
@@ -390,6 +389,25 @@
         }
         .footer-credit:hover { color: var(--accent-color); opacity: 1; text-shadow: 0 0 8px var(--accent-color); }
 
+        /* ================= ZEN MODE ================= */
+        /* Скрываем все элементы, кроме строки поиска */
+        body.zen-mode .logo,
+        body.zen-mode .dynamic-island,
+        body.zen-mode .theme-toggle,
+        body.zen-mode .footer-credit,
+        body.zen-mode .flashlight,
+        body.zen-mode .express-btn,
+        body.zen-mode .toast-notification {
+            opacity: 0 !important;
+            pointer-events: none !important;
+            transform: translateY(-15px) scale(0.98) !important;
+        }
+
+        body.zen-mode .search-wrapper {
+            /* В Zen Mode поиск становится чуть более контрастным/парящим */
+            box-shadow: 0 0 40px var(--shadow-color), 0 0 0 1px transparent;
+        }
+
         @media (max-width: 600px) {
             .logo { font-size: 2.5rem; }
             .search-wrapper { flex-direction: column; border-radius: 20px; padding: 10px; gap: 10px; }
@@ -399,11 +417,8 @@
             .bookmarks-grid { grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); }
             .footer-credit { bottom: 10px; font-size: 0.75rem; }
             
-            /* На мобильных уведомление снизу по центру */
             .toast-notification { 
-                bottom: 50px; 
-                right: auto; 
-                left: 50%; 
+                bottom: 50px; right: auto; left: 50%; 
                 transform: translateX(-50%) translateY(20px) scale(0.95); 
             }
             .toast-notification.show { 
@@ -431,7 +446,6 @@
         <rect class="flash-lens" x="6" y="82" width="28" height="5" rx="2"/>
     </svg>
 
-    <!-- Всплывающее уведомление (Toast) -->
     <div class="toast-notification" id="greetingToast">
         <span id="greetingText"></span>
     </div>
@@ -581,21 +595,10 @@
         let toastTimeout;
         function showGreetingToast(text) {
             greetingText.textContent = text;
-            
-            // Сбрасываем анимацию, если она была
             greetingToast.classList.remove('show');
-            
-            // Даем браузеру микро-паузу для сброса стилей, затем показываем
-            setTimeout(() => {
-                greetingToast.classList.add('show');
-            }, 50);
-
+            setTimeout(() => { greetingToast.classList.add('show'); }, 50);
             if (toastTimeout) clearTimeout(toastTimeout);
-            
-            // Скрываем через 5 секунд
-            toastTimeout = setTimeout(() => {
-                greetingToast.classList.remove('show');
-            }, 5000);
+            toastTimeout = setTimeout(() => { greetingToast.classList.remove('show'); }, 5000);
         }
 
         function updateGreeting(forceShow = false) {
@@ -607,9 +610,7 @@
             else if (hour >= 18 && hour < 23) { period = "evening"; greeting = "Добрый вечер 🌆"; }
             else { period = "night"; greeting = "Доброй ночи 🌙"; }
 
-            // Проверяем, не показывали ли мы уже это приветствие в текущей сессии
             const lastPeriod = sessionStorage.getItem('greetingPeriod');
-            
             if (forceShow || lastPeriod !== period) {
                 sessionStorage.setItem('greetingPeriod', period);
                 showGreetingToast(greeting);
@@ -778,11 +779,28 @@
             applyTheme();
         });
 
-        // ================= 6. ПОИСК =================
+        // ================= 6. УМНЫЙ ПОИСК (URL vs TEXT) =================
         function performSearch() {
             const q = searchInput.value.trim();
-            if (q) window.location.href = searchEngine.value + encodeURIComponent(q);
+            if (!q) return;
+
+            // Регулярное выражение для проверки на URL
+            // Поддерживает: domain.com, www.domain.co.uk, http://site.ru, localhost:3000
+            const urlPattern = /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/\S*)?$/i;
+            const isLocalhost = /^(https?:\/\/)?localhost(:\d+)?(\/\S*)?$/i.test(q);
+
+            if (urlPattern.test(q) || isLocalhost) {
+                let url = q;
+                if (!/^https?:\/\//i.test(url)) {
+                    url = 'https://' + url;
+                }
+                window.location.href = url;
+            } else {
+                // Обычный поиск
+                window.location.href = searchEngine.value + encodeURIComponent(q);
+            }
         }
+
         searchBtn.addEventListener('click', performSearch);
         searchInput.addEventListener('keydown', e => { if (e.key === 'Enter') performSearch(); });
         searchEngine.addEventListener('change', () => localStorage.setItem('troubleTabEngine', searchEngine.value));
@@ -824,18 +842,12 @@
             bookmarks.forEach((bm, i) => {
                 const a = document.createElement('a');
                 a.href = bm.url; a.className = 'bookmark-item'; a.target = '_blank';
-                
                 a.addEventListener('contextmenu', e => { e.preventDefault(); showFormView(i); });
 
                 const editBtn = document.createElement('div');
                 editBtn.className = 'bookmark-edit-btn';
                 editBtn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>`;
-                
-                editBtn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    showFormView(i);
-                });
+                editBtn.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); showFormView(i); });
 
                 const img = document.createElement('img');
                 img.className = 'bookmark-icon';
@@ -881,7 +893,39 @@
             }
         });
 
-        // ================= 8. ПУЗЫРЬКИ =================
+        // ================= 8. ZEN MODE (Режим дзен) =================
+        let zenTimer;
+        const ZEN_TIMEOUT = 300000; // 5 минут (5 * 60 * 1000)
+
+        function resetZenTimer() {
+            // Убираем класс дзен, если он был
+            if (document.body.classList.contains('zen-mode')) {
+                document.body.classList.remove('zen-mode');
+            }
+            
+            clearTimeout(zenTimer);
+            
+            // Не включаем дзен, если открыто модальное окно
+            if (modalOverlay.classList.contains('active')) return;
+
+            zenTimer = setTimeout(() => {
+                // Дополнительная проверка перед включением (вдруг пользователь как раз печатает)
+                if (document.activeElement !== searchInput || searchInput.value.trim() === '') {
+                    document.body.classList.add('zen-mode');
+                }
+            }, ZEN_TIMEOUT);
+        }
+
+        // Слушатели для выхода из Zen Mode
+        ['mousemove', 'mousedown', 'keydown', 'touchstart', 'scroll', 'wheel'].forEach(evt => {
+            window.addEventListener(evt, resetZenTimer, { passive: true });
+        });
+        
+        // Отдельно следим за фокусом и вводом в поиске
+        searchInput.addEventListener('input', resetZenTimer);
+        searchInput.addEventListener('focus', resetZenTimer);
+
+        // ================= 9. ПУЗЫРЬКИ =================
         function resizeCanvas() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
@@ -972,7 +1016,7 @@
             }
         });
 
-        // ================= 9. ПЫЛЬ =================
+        // ================= 10. ПЫЛЬ =================
         function resizeDustCanvas() {
             dustCanvas.width = window.innerWidth;
             dustCanvas.height = window.innerHeight;
@@ -1084,7 +1128,7 @@
         document.documentElement.addEventListener('mouseleave', () => { mouse.active = false; });
         window.addEventListener('blur', () => { mouse.active = false; });
 
-        // ================= 10. СВЕТ =================
+        // ================= 11. СВЕТ =================
         function resizeLightCanvases() {
             const w = window.innerWidth, h = window.innerHeight;
             [lightCanvas, beamCanvas, shadowCanvas].forEach(c => { c.width = w; c.height = h; });
@@ -1202,7 +1246,7 @@
             drawBeam(beam, obstacles, 1.0);
         }
 
-        // ================= 11. ИНИЦИАЛИЗАЦИЯ =================
+        // ================= 12. ИНИЦИАЛИЗАЦИЯ =================
         fLeft.addEventListener('click', () => {
             leftLightOn = !leftLightOn;
             fLeft.classList.toggle('active', leftLightOn);
@@ -1216,9 +1260,7 @@
             const se = localStorage.getItem('troubleTabEngine');
             if (se) searchEngine.value = se;
             
-            // Показываем приветствие (сработает только если период сменился или при первой загрузке)
             updateGreeting();
-            // Проверяем раз в минуту (вдруг вкладка открыта долго и время суток сменилось)
             setInterval(() => updateGreeting(false), 60000);
             
             updateClock();
@@ -1231,6 +1273,9 @@
             
             initWeather();
             setInterval(initWeather, 30 * 60 * 1000);
+
+            // Запуск Zen Mode таймера
+            resetZenTimer();
         });
         setTimeout(() => { updateFlashlightPosition(); refreshLighting(); }, 200);
     </script>
