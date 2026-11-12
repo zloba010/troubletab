@@ -1,3 +1,6 @@
+<img src="screen1.png" alt="скриншот" style="display: inline-block; margin: 0 auto; max-width: 300px;">
+
+
 <h1>Что это за Проект и кому он нужен ?</h1>
 
 Этот проэкт носит название TroubleTab. 
