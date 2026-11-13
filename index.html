@@ -413,6 +413,7 @@
             position: relative;
             overflow: hidden;
         }
+        .service-card[hidden] { display: none; }
         body[data-theme="glass"] .service-card {
             background: linear-gradient(135deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0.10) 100%);
             border: 1px solid rgba(255,255,255,0.55);
@@ -707,6 +708,7 @@
             </div>
             <div class="modal-body">
                 <div class="services-list" id="servicesList">
+                    <!-- Показывается, когда нет прогресса чтения -->
                     <a class="service-card" id="serviceTile" href="/KFWR---Kizami-Free-Web-Reader/" aria-label="Открыть Kizamia Читалка">
                         <div class="service-card-icon" aria-hidden="true">📖</div>
                         <div class="service-card-info">
@@ -715,6 +717,7 @@
                         </div>
                         <div class="service-card-arrow">›</div>
                     </a>
+                    <!-- Показывается, когда есть книга с прогрессом -->
                     <div class="continue-reading" id="continueReading" hidden>
                         <div class="continue-reading-cover" id="crCover">?</div>
                         <div class="continue-reading-info">
@@ -1489,16 +1492,20 @@
         }
 
         function renderServices(){
+            const tile = document.getElementById('serviceTile');
             const continueEl = document.getElementById('continueReading');
-            if (!continueEl) return;
+            if (!tile || !continueEl) return;
 
             const book = getContinueReadingBook();
 
+            // Есть активная книга с прогрессом → только виджет. Иначе → только карточка.
             if (!book){
+                tile.hidden = false;
                 continueEl.hidden = true;
                 return;
             }
 
+            tile.hidden = true;
             continueEl.hidden = false;
 
             const initial = (book.title || '?').trim().charAt(0).toUpperCase() || '?';
