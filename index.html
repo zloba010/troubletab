@@ -229,66 +229,85 @@
             z-index: 10; position: relative;
         }
         .logo {
-            font-size: 3.5rem; font-weight: 800; margin-bottom: 30px;
+            font-size: 3.5rem; font-weight: 800; margin-bottom: 26px;
             letter-spacing: -1px; color: var(--text-color); display: flex;
         }
         body[data-theme="glass"] .logo { text-shadow: 0 4px 10px rgba(255,255,255,0.5); }
         .logo span { display: inline-block; text-shadow: 2px 2px 4px rgba(0,0,0,0.1); }
 
-        /* ================= ПОИСК ================= */
-        .search-wrapper {
-            width: 100%; display: flex; align-items: center;
-            background: var(--input-bg);
-            border: var(--glass-border);
-            border-radius: 40px; padding: 8px 15px;
-            backdrop-filter: var(--glass-blur);
-            -webkit-backdrop-filter: var(--glass-blur);
-            box-shadow: 0 8px 32px var(--shadow-color);
-            transition: all 0.3s ease;
-            z-index: 20; /* Поверх zen-mode */
+        /* ================= СЕКЦИЯ СЕРВИСОВ ================= */
+        .services-section {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 22px;
         }
-        .search-wrapper:focus-within { border-color: var(--accent-color); box-shadow: 0 0 20px var(--accent-color); }
-        .engine-select {
-            background: transparent; border: none; color: var(--text-color);
-            font-size: 1rem; padding: 10px; cursor: pointer; outline: none;
-            font-weight: 600; appearance: none;
-        }
-        .engine-select option { background: var(--bg-color); color: var(--text-color); }
-        body[data-theme="glass"] .engine-select option { background: #ffffff; color: #1a202c; }
-        .search-input {
-            flex: 1; background: transparent; border: none; color: var(--text-color);
-            font-size: 1.1rem; padding: 10px; outline: none;
-        }
-        .search-input::placeholder { color: var(--text-color); opacity: 0.5; }
-        .search-btn {
-            background: transparent;
-            border: 1.5px solid var(--text-color);
+        .services-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
             color: var(--text-color);
-            border-radius: 50%; width: 40px; height: 40px;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; transition: all 0.2s;
+            opacity: 0.4;
+            user-select: none;
         }
-        .search-btn:hover { background: var(--accent-color); border-color: var(--accent-color); color: #fff; transform: scale(1.05); }
-        body[data-theme="glass"] .search-btn {
-            background: transparent;
-            border: 1.5px solid rgba(255, 255, 255, 0.9);
-            color: #1a202c;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        .services-grid {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+            gap: 12px;
+            flex-wrap: wrap;
         }
-        body[data-theme="glass"] .search-btn:hover { background: rgba(255, 255, 255, 0.2); }
 
-        /* ================= КНОПКА ЭКСПРЕСС-ПАНЕЛИ ================= */
-        .express-btn {
-            margin-top: 30px; background: var(--panel-bg); color: var(--text-color);
-            border: var(--glass-border); padding: 12px 24px;
-            border-radius: 25px; font-size: 1rem; font-weight: 600;
-            cursor: pointer;
+        /* Плитка-сервис (по умолчанию) */
+        .service-tile {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 22px;
+            background: var(--panel-bg);
+            border: var(--glass-border);
+            border-radius: 18px;
             backdrop-filter: var(--glass-blur);
             -webkit-backdrop-filter: var(--glass-blur);
             box-shadow: 0 8px 32px var(--shadow-color);
-            display: flex; align-items: center; gap: 10px;
+            text-decoration: none;
+            color: var(--text-color);
+            cursor: pointer;
+            transition: transform .2s ease, box-shadow .25s ease, border-color .15s;
+            position: relative;
+            overflow: hidden;
         }
-        .express-btn:hover { box-shadow: 0 0 20px var(--accent-color); border-color: var(--accent-color); transform: translateY(-2px); }
+        .service-tile[hidden] { display: none; }
+        .service-tile:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 20px var(--accent-color);
+        }
+        .service-tile:active { transform: scale(.98); }
+        .service-tile-icon {
+            font-size: 1.8rem;
+            line-height: 1;
+            flex: 0 0 auto;
+        }
+        .service-tile-name {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-color);
+            white-space: nowrap;
+        }
+        body[data-theme="glass"] .service-tile {
+            background: linear-gradient(135deg, rgba(255,255,255,.34) 0%, rgba(255,255,255,.10) 100%);
+            border: 1px solid rgba(255,255,255,.55);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,.85), 0 8px 28px rgba(100,80,180,.14);
+        }
+        body[data-theme="glass"] .service-tile:hover {
+            border-color: rgba(255,255,255,.85);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,1), 0 16px 44px rgba(100,80,180,.24);
+        }
 
         /* ================= ВИДЖЕТ «ПРОДОЛЖИТЬ ЧТЕНИЕ» ================= */
         .continue-reading{
@@ -298,7 +317,6 @@
             width: 100%;
             max-width: 800px;
             padding: 12px 16px 14px;
-            margin-bottom: 18px;
             background: var(--panel-bg);
             border: var(--glass-border);
             border-radius: 20px;
@@ -353,13 +371,66 @@
             background: var(--accent-color);
             transition: width .35s ease;
         }
-
-        /* glass-тема */
         body[data-theme="glass"] .continue-reading{
             background: linear-gradient(135deg, rgba(255,255,255,.34) 0%, rgba(255,255,255,.10) 100%);
             border: 1px solid rgba(255,255,255,.55);
             box-shadow: inset 0 1px 0 rgba(255,255,255,.85), 0 8px 28px rgba(100,80,180,.14);
         }
+
+        /* ================= ПОИСК ================= */
+        .search-wrapper {
+            width: 100%; display: flex; align-items: center;
+            background: var(--input-bg);
+            border: var(--glass-border);
+            border-radius: 40px; padding: 8px 15px;
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            box-shadow: 0 8px 32px var(--shadow-color);
+            transition: all 0.3s ease;
+            z-index: 20;
+        }
+        .search-wrapper:focus-within { border-color: var(--accent-color); box-shadow: 0 0 20px var(--accent-color); }
+        .engine-select {
+            background: transparent; border: none; color: var(--text-color);
+            font-size: 1rem; padding: 10px; cursor: pointer; outline: none;
+            font-weight: 600; appearance: none;
+        }
+        .engine-select option { background: var(--bg-color); color: var(--text-color); }
+        body[data-theme="glass"] .engine-select option { background: #ffffff; color: #1a202c; }
+        .search-input {
+            flex: 1; background: transparent; border: none; color: var(--text-color);
+            font-size: 1.1rem; padding: 10px; outline: none;
+        }
+        .search-input::placeholder { color: var(--text-color); opacity: 0.5; }
+        .search-btn {
+            background: transparent;
+            border: 1.5px solid var(--text-color);
+            color: var(--text-color);
+            border-radius: 50%; width: 40px; height: 40px;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: all 0.2s;
+        }
+        .search-btn:hover { background: var(--accent-color); border-color: var(--accent-color); color: #fff; transform: scale(1.05); }
+        body[data-theme="glass"] .search-btn {
+            background: transparent;
+            border: 1.5px solid rgba(255, 255, 255, 0.9);
+            color: #1a202c;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        body[data-theme="glass"] .search-btn:hover { background: rgba(255, 255, 255, 0.2); }
+
+        /* ================= КНОПКА ЭКСПРЕСС-ПАНЕЛИ ================= */
+        .express-btn {
+            margin-top: 30px; background: var(--panel-bg); color: var(--text-color);
+            border: var(--glass-border); padding: 12px 24px;
+            border-radius: 25px; font-size: 1rem; font-weight: 600;
+            cursor: pointer;
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            box-shadow: 0 8px 32px var(--shadow-color);
+            display: flex; align-items: center; gap: 10px;
+        }
+        .express-btn:hover { box-shadow: 0 0 20px var(--accent-color); border-color: var(--accent-color); transform: translateY(-2px); }
 
         /* ================= МОДАЛЬНОЕ ОКНО ================= */
         .modal-overlay {
@@ -389,7 +460,6 @@
         .close-btn:hover { color: var(--accent-color); }
         .modal-body { padding: 20px; overflow-y: auto; flex: 1; }
         
-        /* Сетка закладок */
         .bookmarks-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 15px; }
         .bookmark-item {
             display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -406,7 +476,6 @@
         }
         .bookmark-item:hover { border-color: var(--accent-color); transform: translateY(-3px); box-shadow: 0 5px 15px var(--shadow-color); }
         
-        /* Кнопка-карандаш */
         .bookmark-edit-btn {
             position: absolute; top: 6px; right: 6px;
             width: 24px; height: 24px;
@@ -424,7 +493,6 @@
         .bookmark-icon { width: 32px; height: 32px; margin-bottom: 8px; border-radius: 8px; object-fit: cover; }
         .bookmark-title { font-size: 0.8rem; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; font-weight: 600; }
 
-        /* Форма */
         .bookmark-form { display: none; flex-direction: column; gap: 15px; }
         .bookmark-form.active { display: flex; }
         .form-group { display: flex; flex-direction: column; gap: 5px; }
@@ -461,10 +529,9 @@
         .footer-credit:hover { color: var(--accent-color); opacity: 1; text-shadow: 0 0 8px var(--accent-color); }
 
         /* ================= ZEN MODE ================= */
-        /* Скрываем все элементы, кроме строки поиска */
         body.zen-mode .logo,
         body.zen-mode .dynamic-island,
-        body.zen-mode .continue-reading,
+        body.zen-mode .services-section,
         body.zen-mode .theme-toggle,
         body.zen-mode .footer-credit,
         body.zen-mode .flashlight,
@@ -476,12 +543,11 @@
         }
 
         body.zen-mode .search-wrapper {
-            /* В Zen Mode поиск становится чуть более контрастным/парящим */
             box-shadow: 0 0 40px var(--shadow-color), 0 0 0 1px transparent;
         }
 
         @media (max-width: 600px) {
-            .logo { font-size: 2.5rem; }
+            .logo { font-size: 2.5rem; margin-bottom: 20px; }
             .search-wrapper { flex-direction: column; border-radius: 20px; padding: 10px; gap: 10px; }
             .search-input { width: 100%; text-align: center; }
             .engine-select { width: 100%; text-align: center; border-bottom: 1px solid var(--border-color); }
@@ -497,10 +563,25 @@
                 transform: translateX(-50%) translateY(0) scale(1); 
             }
 
+            .services-section {
+                margin-bottom: 16px;
+                gap: 8px;
+            }
+            .services-label {
+                font-size: 0.65rem;
+                letter-spacing: 1.2px;
+            }
+            .service-tile {
+                padding: 12px 18px;
+                gap: 10px;
+                border-radius: 16px;
+            }
+            .service-tile-icon { font-size: 1.5rem; }
+            .service-tile-name { font-size: 0.92rem; }
+
             .continue-reading{
                 padding: 10px 12px 12px;
                 gap: 12px;
-                margin-bottom: 14px;
                 border-radius: 16px;
             }
             .continue-reading-cover{ width: 40px; height: 52px; font-size: 18px; }
@@ -550,15 +631,24 @@
             <span>T</span><span>r</span><span>o</span><span>u</span><span>b</span><span>l</span><span>e</span><span>T</span><span>a</span><span>b</span>
         </h1>
 
-        <div class="continue-reading" id="continueReading" hidden>
-            <div class="continue-reading-cover" id="crCover">?</div>
-            <div class="continue-reading-info">
-                <div class="continue-reading-label">Продолжить чтение</div>
-                <div class="continue-reading-title" id="crTitle"></div>
-                <div class="continue-reading-meta" id="crMeta"></div>
+        <div class="services-section" id="servicesSection">
+            <div class="services-label">Сервисы</div>
+            <div class="services-grid">
+                <a class="service-tile" id="serviceTile" href="/KFWR---Kizami-Free-Web-Reader/" aria-label="Открыть Kizamia Читалка" hidden>
+                    <div class="service-tile-icon" aria-hidden="true">📖</div>
+                    <div class="service-tile-name">Kizamia Читалка</div>
+                </a>
+                <div class="continue-reading" id="continueReading" hidden>
+                    <div class="continue-reading-cover" id="crCover">?</div>
+                    <div class="continue-reading-info">
+                        <div class="continue-reading-label">Продолжить чтение</div>
+                        <div class="continue-reading-title" id="crTitle"></div>
+                        <div class="continue-reading-meta" id="crMeta"></div>
+                    </div>
+                    <div class="continue-reading-arrow">›</div>
+                    <div class="continue-reading-progress" id="crProgress" style="width:0%"></div>
+                </div>
             </div>
-            <div class="continue-reading-arrow">›</div>
-            <div class="continue-reading-progress" id="crProgress" style="width:0%"></div>
         </div>
 
         <div class="search-wrapper">
@@ -878,8 +968,6 @@
             const q = searchInput.value.trim();
             if (!q) return;
 
-            // Регулярное выражение для проверки на URL
-            // Поддерживает: domain.com, www.domain.co.uk, http://site.ru, localhost:3000
             const urlPattern = /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/\S*)?$/i;
             const isLocalhost = /^(https?:\/\/)?localhost(:\d+)?(\/\S*)?$/i.test(q);
 
@@ -890,7 +978,6 @@
                 }
                 window.location.href = url;
             } else {
-                // Обычный поиск
                 window.location.href = searchEngine.value + encodeURIComponent(q);
             }
         }
@@ -989,33 +1076,28 @@
 
         // ================= 8. ZEN MODE (Режим дзен) =================
         let zenTimer;
-        const ZEN_TIMEOUT = 300000; // 5 минут (5 * 60 * 1000)
+        const ZEN_TIMEOUT = 300000; // 5 минут
 
         function resetZenTimer() {
-            // Убираем класс дзен, если он был
             if (document.body.classList.contains('zen-mode')) {
                 document.body.classList.remove('zen-mode');
             }
             
             clearTimeout(zenTimer);
             
-            // Не включаем дзен, если открыто модальное окно
             if (modalOverlay.classList.contains('active')) return;
 
             zenTimer = setTimeout(() => {
-                // Дополнительная проверка перед включением (вдруг пользователь как раз печатает)
                 if (document.activeElement !== searchInput || searchInput.value.trim() === '') {
                     document.body.classList.add('zen-mode');
                 }
             }, ZEN_TIMEOUT);
         }
 
-        // Слушатели для выхода из Zen Mode
         ['mousemove', 'mousedown', 'keydown', 'touchstart', 'scroll', 'wheel'].forEach(evt => {
             window.addEventListener(evt, resetZenTimer, { passive: true });
         });
         
-        // Отдельно следим за фокусом и вводом в поиске
         searchInput.addEventListener('input', resetZenTimer);
         searchInput.addEventListener('focus', resetZenTimer);
 
@@ -1245,6 +1327,10 @@
             const sw = document.querySelector('.search-wrapper'); if (sw) add(sw);
             const eb = document.querySelector('.express-btn'); if (eb) add(eb);
             const cw = document.getElementById('clockWidget'); if (cw) add(cw);
+            const st = document.getElementById('serviceTile');
+            if (st && !st.hidden) add(st);
+            const cr = document.getElementById('continueReading');
+            if (cr && !cr.hidden) add(cr);
             return arr;
         }
         function updateFlashlightPosition() {
@@ -1340,7 +1426,7 @@
             drawBeam(beam, obstacles, 1.0);
         }
 
-        // ================= 13. ВИДЖЕТ «ПРОДОЛЖИТЬ ЧТЕНИЕ» =================
+        // ================= 12. СЕРВИСЫ / ВИДЖЕТ «ПРОДОЛЖИТЬ ЧТЕНИЕ» =================
         const KIZAMI_LIB_KEY = 'kizami.library.v1';
         const READER_URL = '/KFWR---Kizami-Free-Web-Reader/';
 
@@ -1361,12 +1447,21 @@
             } catch(e){ return null; }
         }
 
-        function renderContinueReading(){
-            const el = document.getElementById('continueReading');
-            if (!el) return;
+        function renderServices(){
+            const tile = document.getElementById('serviceTile');
+            const continueEl = document.getElementById('continueReading');
+            if (!tile || !continueEl) return;
+
             const book = getContinueReadingBook();
-            if (!book){ el.hidden = true; return; }
-            el.hidden = false;
+
+            if (!book){
+                tile.hidden = false;
+                continueEl.hidden = true;
+                return;
+            }
+
+            tile.hidden = true;
+            continueEl.hidden = false;
 
             const initial = (book.title || '?').trim().charAt(0).toUpperCase() || '?';
             const author = (book.author || '').trim() || 'Неизвестный автор';
@@ -1378,7 +1473,7 @@
             document.getElementById('crMeta').textContent = `${author} · Стр. ${pageNum} из ${book.totalPages}`;
             document.getElementById('crProgress').style.width = pct + '%';
 
-            el.onclick = () => {
+            continueEl.onclick = () => {
                 window.location.href = READER_URL + '?book=' + encodeURIComponent(book.id);
             };
         }
@@ -1390,21 +1485,24 @@
                 bc.onmessage = (e) => {
                     const d = e.data || {};
                     if (d.type === 'progress' || d.type === 'library-changed'){
-                        renderContinueReading();
+                        renderServices();
                     }
                 };
             } catch(e){}
         })();
 
-        window.addEventListener('focus', renderContinueReading);
+        window.addEventListener('focus', renderServices);
         document.addEventListener('visibilitychange', () => {
-            if (!document.hidden) renderContinueReading();
+            if (!document.hidden) renderServices();
         });
         window.addEventListener('storage', (e) => {
-            if (e.key === KIZAMI_LIB_KEY) renderContinueReading();
+            if (e.key === KIZAMI_LIB_KEY) renderServices();
         });
 
-        // ================= 12. ИНИЦИАЛИЗАЦИЯ =================
+        // Первичный рендер — сразу после определения функции, чтобы не было мигания
+        renderServices();
+
+        // ================= 13. ИНИЦИАЛИЗАЦИЯ =================
         fLeft.addEventListener('click', () => {
             leftLightOn = !leftLightOn;
             fLeft.classList.toggle('active', leftLightOn);
@@ -1428,12 +1526,10 @@
             resizeLightCanvases();
             resizeDustCanvas();
             applyTheme();
-            renderContinueReading();
             
             initWeather();
             setInterval(initWeather, 30 * 60 * 1000);
 
-            // Запуск Zen Mode таймера
             resetZenTimer();
         });
         setTimeout(() => { updateFlashlightPosition(); refreshLighting(); }, 200);
