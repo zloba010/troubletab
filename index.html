@@ -290,6 +290,77 @@
         }
         .express-btn:hover { box-shadow: 0 0 20px var(--accent-color); border-color: var(--accent-color); transform: translateY(-2px); }
 
+        /* ================= ВИДЖЕТ «ПРОДОЛЖИТЬ ЧТЕНИЕ» ================= */
+        .continue-reading{
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            width: 100%;
+            max-width: 800px;
+            padding: 12px 16px 14px;
+            margin-bottom: 18px;
+            background: var(--panel-bg);
+            border: var(--glass-border);
+            border-radius: 20px;
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            box-shadow: 0 8px 32px var(--shadow-color);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: transform .15s ease, box-shadow .25s ease, border-color .15s, background-color .3s, color .3s;
+        }
+        .continue-reading[hidden]{ display: none; }
+        .continue-reading:hover{
+            transform: translateY(-2px);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 20px var(--accent-color);
+        }
+        .continue-reading:active{ transform: scale(.99); }
+
+        .continue-reading-cover{
+            width: 44px; height: 58px; border-radius: 10px;
+            display: grid; place-items: center;
+            background: var(--primary-color); color: var(--bg-color);
+            font-weight: 700; font-size: 20px;
+            flex: 0 0 auto;
+            box-shadow: inset 0 -3px 0 rgba(0,0,0,.15);
+            text-transform: uppercase;
+        }
+        .continue-reading-info{ flex: 1; min-width: 0; }
+        .continue-reading-label{
+            font-size: 10px; font-weight: 700; letter-spacing: .8px;
+            text-transform: uppercase; color: var(--text-color); opacity: .6;
+            margin-bottom: 3px;
+        }
+        .continue-reading-title{
+            font-size: 15px; font-weight: 700; line-height: 1.25;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            color: var(--text-color);
+        }
+        .continue-reading-meta{
+            font-size: 12px; color: var(--text-color); opacity: .7;
+            margin-top: 3px;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .continue-reading-arrow{
+            flex: 0 0 auto; font-size: 26px; line-height: 1;
+            color: var(--text-color); opacity: .55;
+        }
+        .continue-reading-progress{
+            position: absolute; left: 0; bottom: 0;
+            height: 3px; border-radius: 0 3px 3px 0;
+            background: var(--accent-color);
+            transition: width .35s ease;
+        }
+
+        /* glass-тема */
+        body[data-theme="glass"] .continue-reading{
+            background: linear-gradient(135deg, rgba(255,255,255,.34) 0%, rgba(255,255,255,.10) 100%);
+            border: 1px solid rgba(255,255,255,.55);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,.85), 0 8px 28px rgba(100,80,180,.14);
+        }
+
         /* ================= МОДАЛЬНОЕ ОКНО ================= */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -393,6 +464,7 @@
         /* Скрываем все элементы, кроме строки поиска */
         body.zen-mode .logo,
         body.zen-mode .dynamic-island,
+        body.zen-mode .continue-reading,
         body.zen-mode .theme-toggle,
         body.zen-mode .footer-credit,
         body.zen-mode .flashlight,
@@ -424,6 +496,17 @@
             .toast-notification.show { 
                 transform: translateX(-50%) translateY(0) scale(1); 
             }
+
+            .continue-reading{
+                padding: 10px 12px 12px;
+                gap: 12px;
+                margin-bottom: 14px;
+                border-radius: 16px;
+            }
+            .continue-reading-cover{ width: 40px; height: 52px; font-size: 18px; }
+            .continue-reading-title{ font-size: 14px; }
+            .continue-reading-meta{ font-size: 11.5px; }
+            .continue-reading-label{ font-size: 9.5px; }
         }
     </style>
 </head>
@@ -466,6 +549,17 @@
         <h1 class="logo">
             <span>T</span><span>r</span><span>o</span><span>u</span><span>b</span><span>l</span><span>e</span><span>T</span><span>a</span><span>b</span>
         </h1>
+
+        <div class="continue-reading" id="continueReading" hidden>
+            <div class="continue-reading-cover" id="crCover">?</div>
+            <div class="continue-reading-info">
+                <div class="continue-reading-label">Продолжить чтение</div>
+                <div class="continue-reading-title" id="crTitle"></div>
+                <div class="continue-reading-meta" id="crMeta"></div>
+            </div>
+            <div class="continue-reading-arrow">›</div>
+            <div class="continue-reading-progress" id="crProgress" style="width:0%"></div>
+        </div>
 
         <div class="search-wrapper">
             <select class="engine-select" id="searchEngine">
@@ -1246,6 +1340,70 @@
             drawBeam(beam, obstacles, 1.0);
         }
 
+        // ================= 13. ВИДЖЕТ «ПРОДОЛЖИТЬ ЧТЕНИЕ» =================
+        const KIZAMI_LIB_KEY = 'kizami.library.v1';
+        const READER_URL = '/KFWR---Kizami-Free-Web-Reader/';
+
+        function getContinueReadingBook(){
+            try {
+                const raw = localStorage.getItem(KIZAMI_LIB_KEY);
+                if (!raw) return null;
+                const lib = JSON.parse(raw);
+                if (!Array.isArray(lib) || !lib.length) return null;
+                const candidates = lib.filter(b =>
+                    b && typeof b.id === 'string' &&
+                    typeof b.title === 'string' && b.title.trim() &&
+                    (b.page || 0) > 0 &&
+                    (b.totalPages || 0) > 0
+                );
+                if (!candidates.length) return null;
+                return candidates.sort((a, b) => (b.lastOpened || 0) - (a.lastOpened || 0))[0];
+            } catch(e){ return null; }
+        }
+
+        function renderContinueReading(){
+            const el = document.getElementById('continueReading');
+            if (!el) return;
+            const book = getContinueReadingBook();
+            if (!book){ el.hidden = true; return; }
+            el.hidden = false;
+
+            const initial = (book.title || '?').trim().charAt(0).toUpperCase() || '?';
+            const author = (book.author || '').trim() || 'Неизвестный автор';
+            const pageNum = Math.min((book.page || 0) + 1, book.totalPages || 1);
+            const pct = Math.max(1, Math.min(99, Math.round((book.page / book.totalPages) * 100)));
+
+            document.getElementById('crCover').textContent = initial;
+            document.getElementById('crTitle').textContent = book.title;
+            document.getElementById('crMeta').textContent = `${author} · Стр. ${pageNum} из ${book.totalPages}`;
+            document.getElementById('crProgress').style.width = pct + '%';
+
+            el.onclick = () => {
+                window.location.href = READER_URL + '?book=' + encodeURIComponent(book.id);
+            };
+        }
+
+        (function watchKizamiChannel(){
+            if (!window.BroadcastChannel) return;
+            try {
+                const bc = new BroadcastChannel('kizami');
+                bc.onmessage = (e) => {
+                    const d = e.data || {};
+                    if (d.type === 'progress' || d.type === 'library-changed'){
+                        renderContinueReading();
+                    }
+                };
+            } catch(e){}
+        })();
+
+        window.addEventListener('focus', renderContinueReading);
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden) renderContinueReading();
+        });
+        window.addEventListener('storage', (e) => {
+            if (e.key === KIZAMI_LIB_KEY) renderContinueReading();
+        });
+
         // ================= 12. ИНИЦИАЛИЗАЦИЯ =================
         fLeft.addEventListener('click', () => {
             leftLightOn = !leftLightOn;
@@ -1270,6 +1428,7 @@
             resizeLightCanvases();
             resizeDustCanvas();
             applyTheme();
+            renderContinueReading();
             
             initWeather();
             setInterval(initWeather, 30 * 60 * 1000);
