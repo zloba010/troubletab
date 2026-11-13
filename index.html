@@ -277,9 +277,17 @@
         }
         body[data-theme="glass"] .search-btn:hover { background: rgba(255, 255, 255, 0.2); }
 
-        /* ================= КНОПКА ЭКСПРЕСС-ПАНЕЛИ ================= */
-        .express-btn {
-            margin-top: 30px; background: var(--panel-bg); color: var(--text-color);
+        /* ================= РЯД КНОПОК ================= */
+        .actions-row {
+            display: flex;
+            gap: 12px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 100%;
+        }
+        .pill-btn {
+            background: var(--panel-bg); color: var(--text-color);
             border: var(--glass-border); padding: 12px 24px;
             border-radius: 25px; font-size: 1rem; font-weight: 600;
             cursor: pointer;
@@ -287,166 +295,14 @@
             -webkit-backdrop-filter: var(--glass-blur);
             box-shadow: 0 8px 32px var(--shadow-color);
             display: flex; align-items: center; gap: 10px;
+            transition: all 0.2s;
         }
-        .express-btn:hover { box-shadow: 0 0 20px var(--accent-color); border-color: var(--accent-color); transform: translateY(-2px); }
-
-        /* ================= DOCK СЕРВИСОВ (снизу по центру) ================= */
-        .services-dock {
-            position: fixed;
-            left: 50%;
-            bottom: 52px;
-            transform: translateX(-50%);
-            z-index: 95;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            max-width: calc(100vw - 32px);
-            pointer-events: none;
-            transition: opacity .5s ease, transform .5s ease;
-        }
-        .services-dock-label {
-            font-size: 0.65rem;
-            font-weight: 700;
-            letter-spacing: 1.6px;
-            text-transform: uppercase;
-            color: var(--text-color);
-            opacity: 0.35;
-            user-select: none;
-            pointer-events: none;
-            transition: color .3s, opacity .3s;
-        }
-        .services-dock-items {
-            display: flex;
-            align-items: stretch;
-            justify-content: center;
-            gap: 10px;
-            flex-wrap: nowrap;
-            overflow-x: auto;
-            overflow-y: visible;
-            padding: 4px 6px;
-            pointer-events: auto;
-            scrollbar-width: none;
-            max-width: calc(100vw - 32px);
-        }
-        .services-dock-items::-webkit-scrollbar { display: none; }
-
-        /* Плитка-сервис (по умолчанию) */
-        .service-tile {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 12px 18px;
-            background: var(--panel-bg);
-            border: var(--glass-border);
-            border-radius: 16px;
-            backdrop-filter: var(--glass-blur);
-            -webkit-backdrop-filter: var(--glass-blur);
-            box-shadow: 0 8px 32px var(--shadow-color);
-            text-decoration: none;
-            color: var(--text-color);
-            cursor: pointer;
-            flex: 0 0 auto;
-            transition: transform .2s ease, box-shadow .25s ease, border-color .15s;
-            position: relative;
-            overflow: hidden;
-        }
-        .service-tile[hidden] { display: none; }
-        .service-tile:hover {
-            transform: translateY(-2px);
-            border-color: var(--accent-color);
+        .pill-btn:hover {
             box-shadow: 0 0 20px var(--accent-color);
-        }
-        .service-tile:active { transform: scale(.98); }
-        .service-tile-icon {
-            font-size: 1.5rem;
-            line-height: 1;
-            flex: 0 0 auto;
-        }
-        .service-tile-name {
-            font-size: 0.92rem;
-            font-weight: 700;
-            color: var(--text-color);
-            white-space: nowrap;
-        }
-        body[data-theme="glass"] .service-tile {
-            background: linear-gradient(135deg, rgba(255,255,255,.34) 0%, rgba(255,255,255,.10) 100%);
-            border: 1px solid rgba(255,255,255,.55);
-            box-shadow: inset 0 1px 0 rgba(255,255,255,.85), 0 8px 28px rgba(100,80,180,.14);
-        }
-        body[data-theme="glass"] .service-tile:hover {
-            border-color: rgba(255,255,255,.85);
-            box-shadow: inset 0 1px 0 rgba(255,255,255,1), 0 16px 44px rgba(100,80,180,.24);
-        }
-
-        /* Виджет «Продолжить чтение» (внутри dock) */
-        .continue-reading{
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 10px 14px 12px;
-            min-width: 220px;
-            max-width: 340px;
-            background: var(--panel-bg);
-            border: var(--glass-border);
-            border-radius: 16px;
-            backdrop-filter: var(--glass-blur);
-            -webkit-backdrop-filter: var(--glass-blur);
-            box-shadow: 0 8px 32px var(--shadow-color);
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            flex: 0 0 auto;
-            transition: transform .15s ease, box-shadow .25s ease, border-color .15s, background-color .3s, color .3s;
-        }
-        .continue-reading[hidden]{ display: none; }
-        .continue-reading:hover{
-            transform: translateY(-2px);
             border-color: var(--accent-color);
-            box-shadow: 0 0 20px var(--accent-color);
+            transform: translateY(-2px);
         }
-        .continue-reading:active{ transform: scale(.99); }
-
-        .continue-reading-cover{
-            width: 36px; height: 48px; border-radius: 8px;
-            display: grid; place-items: center;
-            background: var(--primary-color); color: var(--bg-color);
-            font-weight: 700; font-size: 17px;
-            flex: 0 0 auto;
-            box-shadow: inset 0 -3px 0 rgba(0,0,0,.15);
-            text-transform: uppercase;
-        }
-        .continue-reading-info{ flex: 1; min-width: 0; }
-        .continue-reading-label{
-            font-size: 9px; font-weight: 700; letter-spacing: .8px;
-            text-transform: uppercase; color: var(--text-color); opacity: .6;
-            margin-bottom: 2px;
-        }
-        .continue-reading-title{
-            font-size: 13px; font-weight: 700; line-height: 1.25;
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-            color: var(--text-color);
-        }
-        .continue-reading-meta{
-            font-size: 11px; color: var(--text-color); opacity: .7;
-            margin-top: 2px;
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-        }
-        .continue-reading-arrow{
-            flex: 0 0 auto; font-size: 22px; line-height: 1;
-            color: var(--text-color); opacity: .55;
-        }
-        .continue-reading-progress{
-            position: absolute; left: 0; bottom: 0;
-            height: 3px; border-radius: 0 3px 3px 0;
-            background: var(--accent-color);
-            transition: width .35s ease;
-        }
-        body[data-theme="glass"] .continue-reading{
-            background: linear-gradient(135deg, rgba(255,255,255,.34) 0%, rgba(255,255,255,.10) 100%);
-            border: 1px solid rgba(255,255,255,.55);
-            box-shadow: inset 0 1px 0 rgba(255,255,255,.85), 0 8px 28px rgba(100,80,180,.14);
-        }
+        .pill-btn svg { flex-shrink: 0; }
 
         /* ================= МОДАЛЬНОЕ ОКНО ================= */
         .modal-overlay {
@@ -475,7 +331,8 @@
         .close-btn { background: transparent; border: none; color: var(--text-color); font-size: 1.5rem; cursor: pointer; }
         .close-btn:hover { color: var(--accent-color); }
         .modal-body { padding: 20px; overflow-y: auto; flex: 1; }
-        
+
+        /* Закладки экспресс-панели */
         .bookmarks-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 15px; }
         .bookmark-item {
             display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -491,7 +348,7 @@
             border: 1px solid rgba(255, 255, 255, 0.5);
         }
         .bookmark-item:hover { border-color: var(--accent-color); transform: translateY(-3px); box-shadow: 0 5px 15px var(--shadow-color); }
-        
+
         .bookmark-edit-btn {
             position: absolute; top: 6px; right: 6px;
             width: 24px; height: 24px;
@@ -535,30 +392,153 @@
         .btn-add { width: 100%; margin-bottom: 20px; background: transparent; border: 2px dashed var(--border-color); color: var(--text-color); }
         .btn-add:hover { border-color: var(--accent-color); color: var(--accent-color); }
 
+        /* ================= СЕРВИСЫ В МОДАЛКЕ ================= */
+        .services-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .service-card {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 18px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            text-decoration: none;
+            color: var(--text-color);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        body[data-theme="glass"] .service-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0.10) 100%);
+            border: 1px solid rgba(255,255,255,0.55);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.85);
+        }
+        .service-card:hover {
+            border-color: var(--accent-color);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px var(--shadow-color);
+        }
+        .service-card:active { transform: scale(.99); }
+        .service-card-icon {
+            width: 44px; height: 44px;
+            display: grid; place-items: center;
+            font-size: 1.8rem; line-height: 1;
+            flex-shrink: 0;
+            border-radius: 12px;
+            background: rgba(128, 128, 128, 0.12);
+        }
+        body[data-theme="dark"] .service-card-icon {
+            background: rgba(255, 255, 255, 0.06);
+        }
+        body[data-theme="glass"] .service-card-icon {
+            background: rgba(255, 255, 255, 0.45);
+        }
+        .service-card-info { flex: 1; min-width: 0; }
+        .service-card-name {
+            font-size: 15px; font-weight: 700; color: var(--text-color);
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .service-card-desc {
+            font-size: 12px; color: var(--text-color); opacity: 0.6;
+            margin-top: 2px;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .service-card-arrow {
+            flex: 0 0 auto;
+            font-size: 22px; line-height: 1;
+            color: var(--text-color); opacity: 0.5;
+        }
+
+        /* Виджет «Продолжить чтение» внутри модалки */
+        .continue-reading {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 18px 14px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.2s ease;
+            color: var(--text-color);
+            text-decoration: none;
+        }
+        body[data-theme="glass"] .continue-reading {
+            background: linear-gradient(135deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0.10) 100%);
+            border: 1px solid rgba(255,255,255,0.55);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.85);
+        }
+        .continue-reading[hidden] { display: none; }
+        .continue-reading:hover {
+            border-color: var(--accent-color);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px var(--shadow-color);
+        }
+        .continue-reading:active { transform: scale(.99); }
+        .continue-reading-cover {
+            width: 44px; height: 58px; border-radius: 8px;
+            display: grid; place-items: center;
+            background: var(--primary-color); color: var(--bg-color);
+            font-weight: 700; font-size: 20px;
+            flex: 0 0 auto;
+            box-shadow: inset 0 -3px 0 rgba(0,0,0,.15);
+            text-transform: uppercase;
+        }
+        .continue-reading-info { flex: 1; min-width: 0; }
+        .continue-reading-label {
+            font-size: 10px; font-weight: 700; letter-spacing: .8px;
+            text-transform: uppercase; color: var(--text-color); opacity: .6;
+            margin-bottom: 3px;
+        }
+        .continue-reading-title {
+            font-size: 15px; font-weight: 700; line-height: 1.25;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            color: var(--text-color);
+        }
+        .continue-reading-meta {
+            font-size: 12px; color: var(--text-color); opacity: .7;
+            margin-top: 3px;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .continue-reading-arrow {
+            flex: 0 0 auto; font-size: 26px; line-height: 1;
+            color: var(--text-color); opacity: .55;
+        }
+        .continue-reading-progress {
+            position: absolute; left: 0; bottom: 0;
+            height: 3px; border-radius: 0 3px 3px 0;
+            background: var(--accent-color);
+            transition: width .35s ease;
+        }
+
         /* ================= НАДПИСЬ ВНИЗУ ================= */
         .footer-credit {
-            position: fixed; bottom: 14px; left: 50%; transform: translateX(-50%);
-            z-index: 100; font-size: 0.75rem; font-weight: 500;
+            position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%);
+            z-index: 100; font-size: 0.85rem; font-weight: 500;
             text-decoration: none; transition: all 0.3s ease;
-            color: var(--text-color); opacity: 0.5;
-            letter-spacing: 0.3px;
+            color: var(--text-color); opacity: 0.7;
         }
         .footer-credit:hover { color: var(--accent-color); opacity: 1; text-shadow: 0 0 8px var(--accent-color); }
 
         /* ================= ZEN MODE ================= */
         body.zen-mode .logo,
         body.zen-mode .dynamic-island,
-        body.zen-mode .services-dock,
+        body.zen-mode .actions-row,
         body.zen-mode .theme-toggle,
         body.zen-mode .footer-credit,
         body.zen-mode .flashlight,
-        body.zen-mode .express-btn,
         body.zen-mode .toast-notification {
             opacity: 0 !important;
             pointer-events: none !important;
             transform: translateY(-15px) scale(0.98) !important;
         }
-        body.zen-mode .services-dock { transform: translateX(-50%) translateY(-15px) scale(0.98) !important; }
 
         body.zen-mode .search-wrapper {
             box-shadow: 0 0 40px var(--shadow-color), 0 0 0 1px transparent;
@@ -571,7 +551,7 @@
             .engine-select { width: 100%; text-align: center; border-bottom: 1px solid var(--border-color); }
             .search-btn { width: 100%; border-radius: 10px; }
             .bookmarks-grid { grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); }
-            .footer-credit { bottom: 8px; font-size: 0.65rem; }
+            .footer-credit { bottom: 10px; font-size: 0.75rem; }
             
             .toast-notification { 
                 bottom: 50px; right: auto; left: 50%; 
@@ -581,37 +561,31 @@
                 transform: translateX(-50%) translateY(0) scale(1); 
             }
 
-            .services-dock {
-                bottom: 30px;
-                gap: 6px;
-            }
-            .services-dock-label {
-                font-size: 0.6rem;
-                letter-spacing: 1.2px;
-            }
-            .services-dock-items {
-                gap: 8px;
-                padding: 2px 4px;
-            }
-            .service-tile {
-                padding: 10px 14px;
-                gap: 8px;
-                border-radius: 14px;
-            }
-            .service-tile-icon { font-size: 1.3rem; }
-            .service-tile-name { font-size: 0.85rem; }
-
-            .continue-reading{
-                padding: 9px 12px 11px;
+            .actions-row {
+                margin-top: 24px;
                 gap: 10px;
-                min-width: 200px;
-                max-width: 260px;
-                border-radius: 14px;
             }
-            .continue-reading-cover{ width: 32px; height: 42px; font-size: 15px; }
-            .continue-reading-title{ font-size: 12px; }
-            .continue-reading-meta{ font-size: 10px; }
-            .continue-reading-label{ font-size: 8.5px; }
+            .pill-btn {
+                padding: 10px 18px;
+                font-size: 0.92rem;
+                gap: 8px;
+            }
+            .pill-btn svg { width: 18px; height: 18px; }
+
+            .modal { border-radius: 24px; max-height: 90vh; }
+            .modal-header { padding: 16px; }
+            .modal-header h2 { font-size: 1.25rem; }
+            .modal-body { padding: 16px; }
+
+            .service-card { padding: 12px 14px; gap: 12px; }
+            .service-card-icon { width: 40px; height: 40px; font-size: 1.5rem; }
+            .service-card-name { font-size: 14px; }
+            .service-card-desc { font-size: 11px; }
+
+            .continue-reading { padding: 10px 14px 12px; gap: 12px; }
+            .continue-reading-cover { width: 38px; height: 50px; font-size: 17px; }
+            .continue-reading-title { font-size: 14px; }
+            .continue-reading-meta { font-size: 11px; }
         }
     </style>
 </head>
@@ -669,41 +643,21 @@
             </button>
         </div>
 
-        <button class="express-btn" id="openModalBtn">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
-            Экспресс-панель
-        </button>
-    </div>
-
-    <!-- DOCK СЕРВИСОВ -->
-    <div class="services-dock" id="servicesDock">
-        <div class="services-dock-label">Сервисы</div>
-        <div class="services-dock-items" id="servicesDockItems">
-            <a class="service-tile" id="serviceTile" href="/KFWR---Kizami-Free-Web-Reader/" aria-label="Открыть Kizamia Читалка" hidden>
-                <span class="service-tile-icon" aria-hidden="true">📖</span>
-                <span class="service-tile-name">Kizamia Читалка</span>
-            </a>
-            <div class="continue-reading" id="continueReading" hidden>
-                <div class="continue-reading-cover" id="crCover">?</div>
-                <div class="continue-reading-info">
-                    <div class="continue-reading-label">Продолжить чтение</div>
-                    <div class="continue-reading-title" id="crTitle"></div>
-                    <div class="continue-reading-meta" id="crMeta"></div>
-                </div>
-                <div class="continue-reading-arrow">›</div>
-                <div class="continue-reading-progress" id="crProgress" style="width:0%"></div>
-            </div>
-            <!-- Сюда добавляйте другие сервисы-плитки в будущем:
-            <a class="service-tile" href="/other-service/">
-                <span class="service-tile-icon">🎵</span>
-                <span class="service-tile-name">Другой сервис</span>
-            </a>
-            -->
+        <div class="actions-row">
+            <button class="pill-btn" id="openModalBtn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                Экспресс-панель
+            </button>
+            <button class="pill-btn" id="openServicesBtn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                Сервисы
+            </button>
         </div>
     </div>
 
     <a href="https://github.com/zloba010" target="_blank" rel="noopener noreferrer" class="footer-credit">проект был написан kizamia</a>
 
+    <!-- ЭКСПРЕСС-ПАНЕЛЬ -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal">
             <div class="modal-header">
@@ -739,6 +693,48 @@
                         <button class="btn btn-danger" id="deleteBtn" style="display: none;">Удалить</button>
                         <button class="btn btn-primary" id="saveBtn">Сохранить</button>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- СЕРВИСЫ -->
+    <div class="modal-overlay" id="servicesOverlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Сервисы</h2>
+                <button class="close-btn" id="closeServicesBtn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="services-list" id="servicesList">
+                    <a class="service-card" id="serviceTile" href="/KFWR---Kizami-Free-Web-Reader/" aria-label="Открыть Kizamia Читалка">
+                        <div class="service-card-icon" aria-hidden="true">📖</div>
+                        <div class="service-card-info">
+                            <div class="service-card-name">Kizamia Читалка</div>
+                            <div class="service-card-desc">Читайте книги прямо в браузере</div>
+                        </div>
+                        <div class="service-card-arrow">›</div>
+                    </a>
+                    <div class="continue-reading" id="continueReading" hidden>
+                        <div class="continue-reading-cover" id="crCover">?</div>
+                        <div class="continue-reading-info">
+                            <div class="continue-reading-label">Продолжить чтение</div>
+                            <div class="continue-reading-title" id="crTitle"></div>
+                            <div class="continue-reading-meta" id="crMeta"></div>
+                        </div>
+                        <div class="continue-reading-arrow">›</div>
+                        <div class="continue-reading-progress" id="crProgress" style="width:0%"></div>
+                    </div>
+                    <!-- Будущие сервисы добавляйте сюда:
+                    <a class="service-card" href="/other-service/">
+                        <div class="service-card-icon">🎵</div>
+                        <div class="service-card-info">
+                            <div class="service-card-name">Другой сервис</div>
+                            <div class="service-card-desc">Описание сервиса</div>
+                        </div>
+                        <div class="service-card-arrow">›</div>
+                    </a>
+                    -->
                 </div>
             </div>
         </div>
@@ -786,6 +782,10 @@
         let bookmarks = [];
         try { const sb = localStorage.getItem('troubleTabBookmarks'); if (sb) bookmarks = JSON.parse(sb); } catch(e) {}
         let editingIndex = -1;
+
+        const openServicesBtn = document.getElementById('openServicesBtn');
+        const closeServicesBtn = document.getElementById('closeServicesBtn');
+        const servicesOverlay = document.getElementById('servicesOverlay');
 
         const canvas = document.getElementById('bubbleCanvas');
         const ctx = canvas.getContext('2d');
@@ -1105,6 +1105,19 @@
             }
         });
 
+        // ================= 7.5. СЕРВИСЫ =================
+        function openServices() {
+            servicesOverlay.classList.add('active');
+            renderServices();
+        }
+        function closeServices() {
+            servicesOverlay.classList.remove('active');
+            setTimeout(() => searchInput.focus(), 300);
+        }
+        openServicesBtn.addEventListener('click', openServices);
+        closeServicesBtn.addEventListener('click', closeServices);
+        servicesOverlay.addEventListener('click', e => { if (e.target === servicesOverlay) closeServices(); });
+
         // ================= 8. ZEN MODE (Режим дзен) =================
         let zenTimer;
         const ZEN_TIMEOUT = 300000; // 5 минут
@@ -1117,6 +1130,7 @@
             clearTimeout(zenTimer);
             
             if (modalOverlay.classList.contains('active')) return;
+            if (servicesOverlay.classList.contains('active')) return;
 
             zenTimer = setTimeout(() => {
                 if (document.activeElement !== searchInput || searchInput.value.trim() === '') {
@@ -1356,12 +1370,8 @@
             };
             document.querySelectorAll('.logo span').forEach(add);
             const sw = document.querySelector('.search-wrapper'); if (sw) add(sw);
-            const eb = document.querySelector('.express-btn'); if (eb) add(eb);
+            document.querySelectorAll('.pill-btn').forEach(add);
             const cw = document.getElementById('clockWidget'); if (cw) add(cw);
-            const st = document.getElementById('serviceTile');
-            if (st && !st.hidden) add(st);
-            const cr = document.getElementById('continueReading');
-            if (cr && !cr.hidden) add(cr);
             return arr;
         }
         function updateFlashlightPosition() {
@@ -1457,7 +1467,7 @@
             drawBeam(beam, obstacles, 1.0);
         }
 
-        // ================= 12. DOCK СЕРВИСОВ / ВИДЖЕТ «ПРОДОЛЖИТЬ ЧТЕНИЕ» =================
+        // ================= 12. ВИДЖЕТ «ПРОДОЛЖИТЬ ЧТЕНИЕ» =================
         const KIZAMI_LIB_KEY = 'kizami.library.v1';
         const READER_URL = '/KFWR---Kizami-Free-Web-Reader/';
 
@@ -1479,19 +1489,16 @@
         }
 
         function renderServices(){
-            const tile = document.getElementById('serviceTile');
             const continueEl = document.getElementById('continueReading');
-            if (!tile || !continueEl) return;
+            if (!continueEl) return;
 
             const book = getContinueReadingBook();
 
             if (!book){
-                tile.hidden = false;
                 continueEl.hidden = true;
                 return;
             }
 
-            tile.hidden = true;
             continueEl.hidden = false;
 
             const initial = (book.title || '?').trim().charAt(0).toUpperCase() || '?';
@@ -1522,16 +1529,15 @@
             } catch(e){}
         })();
 
-        window.addEventListener('focus', renderServices);
+        window.addEventListener('focus', () => {
+            renderServices();
+        });
         document.addEventListener('visibilitychange', () => {
             if (!document.hidden) renderServices();
         });
         window.addEventListener('storage', (e) => {
             if (e.key === KIZAMI_LIB_KEY) renderServices();
         });
-
-        // Первичный рендер
-        renderServices();
 
         // ================= 13. ИНИЦИАЛИЗАЦИЯ =================
         fLeft.addEventListener('click', () => {
@@ -1564,6 +1570,13 @@
             resetZenTimer();
         });
         setTimeout(() => { updateFlashlightPosition(); refreshLighting(); }, 200);
+
+        // Escape закрывает сервисы
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && servicesOverlay.classList.contains('active')) {
+                closeServices();
+            }
+        });
     </script>
 </body>
 </html>
