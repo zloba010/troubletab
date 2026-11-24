@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://zloba010.github.io/sitemap.xml
+Sitemap: https://zloba010.github.io/troubletab/sitemap.xml
