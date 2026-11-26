@@ -6,7 +6,6 @@
     <meta name="yandex-verification" content="d141a4f33921e812" />
     <title>TroubleTab</title>
     <style>
-        /* ================= ПЕРЕМЕННЫЕ ТЕМ ================= */
         :root {
             --bg-color: #f4ebd9;
             --text-color: #3e2723;
@@ -43,9 +42,7 @@
             --glass-border: 1.5px solid rgba(255, 255, 255, 0.8);
             --shadow-color: rgba(0, 0, 0, 0.08);
         }
-
-        /* ================= ОБЩИЕ СТИЛИ ================= */
-        * {
+* {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
@@ -76,9 +73,7 @@
             0% { background-position: 0% 0%; }
             100% { background-position: 100% 100%; }
         }
-
-        /* ================= CANVAS ================= */
-        #lightCanvas {
+#lightCanvas {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 5; pointer-events: none; display: none;
         }
@@ -94,8 +89,7 @@
         }
         body[data-theme="dark"] #dustCanvas { display: block; }
 
-        /* ================= ФОНАРИК ================= */
-        .flashlight {
+          .flashlight {
             position: fixed; width: 32px; height: 72px; z-index: 90;
             cursor: pointer; display: none; transform-origin: 50% 0%;
             transition: filter 0.3s, opacity 0.5s ease, transform 0.5s ease;
@@ -110,7 +104,7 @@
         .flashlight.active { filter: drop-shadow(0 0 12px rgba(255, 235, 59, 0.55)); }
         body[data-theme="dark"] .flashlight { display: block; }
 
-        /* ================= ВИДЖЕТ ВРЕМЕНИ ================= */
+        
         .dynamic-island {
             position: absolute; top: 20px; left: 50%; transform: translateX(-50%);
             background-color: var(--panel-bg);
@@ -139,7 +133,7 @@
         }
         .dynamic-island:hover { padding-bottom: 20px; padding-top: 16px; border-radius: 25px; }
 
-        /* Погода */
+        
         .weather-display {
             display: flex;
             align-items: center;
@@ -176,7 +170,7 @@
             opacity: 0 !important; max-height: 0 !important; margin: 0 !important;
         }
 
-        /* ================= КНОПКА ТЕМ ================= */
+        
         .theme-toggle {
             position: absolute; top: 20px; right: 20px;
             background: var(--panel-bg); color: var(--text-color);
@@ -191,7 +185,7 @@
         }
         .theme-toggle:hover { box-shadow: 0 0 20px var(--accent-color); border-color: var(--accent-color); }
 
-        /* ================= УВЕДОМЛЕНИЕ (TOAST) ================= */
+        
         .toast-notification {
             position: fixed;
             bottom: 30px;
@@ -223,7 +217,7 @@
             pointer-events: auto;
         }
 
-        /* ================= ЦЕНТРАЛЬНЫЙ БЛОК ================= */
+        /
         .main-container {
             display: flex; flex-direction: column; align-items: center;
             width: 100%; max-width: 800px; padding: 20px;
@@ -236,7 +230,7 @@
         body[data-theme="glass"] .logo { text-shadow: 0 4px 10px rgba(255,255,255,0.5); }
         .logo span { display: inline-block; text-shadow: 2px 2px 4px rgba(0,0,0,0.1); }
 
-        /* ================= ПОИСК ================= */
+        
         .search-wrapper {
             width: 100%; display: flex; align-items: center;
             background: var(--input-bg);
@@ -278,7 +272,7 @@
         }
         body[data-theme="glass"] .search-btn:hover { background: rgba(255, 255, 255, 0.2); }
 
-        /* ================= РЯД КНОПОК ================= */
+        
         .actions-row {
             display: flex;
             gap: 12px;
@@ -305,7 +299,7 @@
         }
         .pill-btn svg { flex-shrink: 0; }
 
-        /* ================= МОДАЛЬНОЕ ОКНО ================= */
+        
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.2); backdrop-filter: blur(10px);
@@ -333,7 +327,7 @@
         .close-btn:hover { color: var(--accent-color); }
         .modal-body { padding: 20px; overflow-y: auto; flex: 1; }
 
-        /* Закладки экспресс-панели */
+        
         .bookmarks-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 15px; }
         .bookmark-item {
             display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -393,7 +387,7 @@
         .btn-add { width: 100%; margin-bottom: 20px; background: transparent; border: 2px dashed var(--border-color); color: var(--text-color); }
         .btn-add:hover { border-color: var(--accent-color); color: var(--accent-color); }
 
-        /* ================= СЕРВИСЫ В МОДАЛКЕ ================= */
+        
         .services-list {
             display: flex;
             flex-direction: column;
@@ -456,7 +450,7 @@
             color: var(--text-color); opacity: 0.5;
         }
 
-        /* Виджет «Продолжить чтение» внутри модалки */
+        
         .continue-reading {
             display: flex;
             align-items: center;
@@ -520,7 +514,6 @@
             transition: width .35s ease;
         }
 
-        /* ================= НАДПИСЬ ВНИЗУ ================= */
         .footer-credit {
             position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%);
             z-index: 100; font-size: 0.85rem; font-weight: 500;
@@ -529,7 +522,7 @@
         }
         .footer-credit:hover { color: var(--accent-color); opacity: 1; text-shadow: 0 0 8px var(--accent-color); }
 
-        /* ================= ZEN MODE ================= */
+        /* ================= ZEN подумаю, стоит ли оставлять ================= */
         body.zen-mode .logo,
         body.zen-mode .dynamic-island,
         body.zen-mode .actions-row,
@@ -659,7 +652,7 @@
 
     <a href="https://github.com/zloba010" target="_blank" rel="noopener noreferrer" class="footer-credit">проект был написан kizamia</a>
 
-    <!-- ЭКСПРЕСС-ПАНЕЛЬ -->
+    <!-- ЭКСПРЕСС-ПАНЕЛЬ , не забыть доработать ux/ui, иначе откат к версии панели 4 -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal">
             <div class="modal-header">
@@ -700,7 +693,6 @@
         </div>
     </div>
 
-    <!-- СЕРВИСЫ -->
     <div class="modal-overlay" id="servicesOverlay">
         <div class="modal">
             <div class="modal-header">
@@ -718,7 +710,7 @@
                         </div>
                         <div class="service-card-arrow">›</div>
                     </a>
-                    <!-- Показывается, когда есть книга с прогрессом -->
+                    
                     <div class="continue-reading" id="continueReading" hidden>
                         <div class="continue-reading-cover" id="crCover">?</div>
                         <div class="continue-reading-info">
@@ -729,7 +721,7 @@
                         <div class="continue-reading-arrow">›</div>
                         <div class="continue-reading-progress" id="crProgress" style="width:0%"></div>
                     </div>
-                                        <!-- Заметки -->
+                
                     <a class="service-card" href="https://zloba010.github.io/kizamianotes/" target="_blank" rel="noopener noreferrer" aria-label="Открыть Kizamia Заметки">
                         <div class="service-card-icon" aria-hidden="true">
                             <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
@@ -770,7 +762,7 @@
     </div>
 
     <script>
-        // ================= 1. ОБЪЯВЛЕНИЯ =================
+        
         const clockWidget = document.getElementById('clockWidget');
         const timeDisplay = document.getElementById('timeDisplay');
         const dateDisplay = document.getElementById('dateDisplay');
@@ -834,8 +826,7 @@
         const dustCtx = dustCanvas.getContext('2d');
         let dust = [], dustAnimId, isDustAnimating = false;
         const mouse = { x: -1000, y: -1000, active: false };
-
-        // ================= 2. УВЕДОМЛЕНИЕ (TOAST) =================
+ 
         let toastTimeout;
         function showGreetingToast(text) {
             greetingText.textContent = text;
@@ -861,7 +852,7 @@
             }
         }
 
-        // ================= 3. ЧАСЫ =================
+        
         function updateClock() {
             if (isAnimating) return;
             const now = new Date();
@@ -884,7 +875,7 @@
             }, 1000);
         });
 
-        // ================= 4. ПОГОДА =================
+        
         function getCityFromTimezone() {
             try {
                 const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
@@ -997,7 +988,7 @@
             applyWeather(tzCity, '--', null, null);
         }
 
-        // ================= 5. ТЕМЫ =================
+        
         function applyTheme() {
             const theme = themes[currentThemeIndex];
             document.body.setAttribute('data-theme', theme);
@@ -1023,7 +1014,7 @@
             applyTheme();
         });
 
-        // ================= 6. УМНЫЙ ПОИСК (URL vs TEXT) =================
+        // ================= експерементальная функция. вставка url = пере0од по ссылке. если тект , то поиск.  (URL vs TEXT) =================
         function performSearch() {
             const q = searchInput.value.trim();
             if (!q) return;
@@ -1134,7 +1125,6 @@
             }
         });
 
-        // ================= 7.5. СЕРВИСЫ =================
         function openServices() {
             servicesOverlay.classList.add('active');
             renderServices();
@@ -1147,7 +1137,7 @@
         closeServicesBtn.addEventListener('click', closeServices);
         servicesOverlay.addEventListener('click', e => { if (e.target === servicesOverlay) closeServices(); });
 
-        // ================= 8. ZEN MODE (Режим дзен) =================
+        
         let zenTimer;
         const ZEN_TIMEOUT = 300000; // 5 минут
 
@@ -1175,7 +1165,7 @@
         searchInput.addEventListener('input', resetZenTimer);
         searchInput.addEventListener('focus', resetZenTimer);
 
-        // ================= 9. ПУЗЫРЬКИ =================
+        
         function resizeCanvas() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
@@ -1266,7 +1256,6 @@
             }
         });
 
-        // ================= 10. ПЫЛЬ =================
         function resizeDustCanvas() {
             dustCanvas.width = window.innerWidth;
             dustCanvas.height = window.innerHeight;
@@ -1378,7 +1367,7 @@
         document.documentElement.addEventListener('mouseleave', () => { mouse.active = false; });
         window.addEventListener('blur', () => { mouse.active = false; });
 
-        // ================= 11. СВЕТ =================
+        
         function resizeLightCanvases() {
             const w = window.innerWidth, h = window.innerHeight;
             [lightCanvas, beamCanvas, shadowCanvas].forEach(c => { c.width = w; c.height = h; });
@@ -1496,7 +1485,7 @@
             drawBeam(beam, obstacles, 1.0);
         }
 
-        // ================= 12. ВИДЖЕТ «ПРОДОЛЖИТЬ ЧТЕНИЕ» =================
+        
         const KIZAMI_LIB_KEY = 'kizami.library.v1';
         const READER_URL = '/KFWR---Kizami-Free-Web-Reader/';
 
@@ -1524,7 +1513,7 @@
 
             const book = getContinueReadingBook();
 
-            // Есть активная книга с прогрессом → только виджет. Иначе → только карточка.
+            // Есть активная книга с прогрессом → только виджет. Иначе → только карточка. В браузере работать не будет. исправить.
             if (!book){
                 tile.hidden = false;
                 continueEl.hidden = true;
@@ -1572,7 +1561,7 @@
             if (e.key === KIZAMI_LIB_KEY) renderServices();
         });
 
-        // ================= 13. ИНИЦИАЛИЗАЦИЯ =================
+        
         fLeft.addEventListener('click', () => {
             leftLightOn = !leftLightOn;
             fLeft.classList.toggle('active', leftLightOn);
@@ -1604,7 +1593,7 @@
         });
         setTimeout(() => { updateFlashlightPosition(); refreshLighting(); }, 200);
 
-        // Escape закрывает сервисы
+        
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && servicesOverlay.classList.contains('active')) {
                 closeServices();
