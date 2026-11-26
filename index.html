@@ -42,7 +42,7 @@
             --glass-border: 1.5px solid rgba(255, 255, 255, 0.8);
             --shadow-color: rgba(0, 0, 0, 0.08);
         }
-* {
+        * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
@@ -73,7 +73,7 @@
             0% { background-position: 0% 0%; }
             100% { background-position: 100% 100%; }
         }
-#lightCanvas {
+        #lightCanvas {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 5; pointer-events: none; display: none;
         }
@@ -89,7 +89,7 @@
         }
         body[data-theme="dark"] #dustCanvas { display: block; }
 
-          .flashlight {
+        .flashlight {
             position: fixed; width: 32px; height: 72px; z-index: 90;
             cursor: pointer; display: none; transform-origin: 50% 0%;
             transition: filter 0.3s, opacity 0.5s ease, transform 0.5s ease;
@@ -104,7 +104,6 @@
         .flashlight.active { filter: drop-shadow(0 0 12px rgba(255, 235, 59, 0.55)); }
         body[data-theme="dark"] .flashlight { display: block; }
 
-        
         .dynamic-island {
             position: absolute; top: 20px; left: 50%; transform: translateX(-50%);
             background-color: var(--panel-bg);
@@ -133,7 +132,6 @@
         }
         .dynamic-island:hover { padding-bottom: 20px; padding-top: 16px; border-radius: 25px; }
 
-        
         .weather-display {
             display: flex;
             align-items: center;
@@ -153,7 +151,19 @@
             max-height: 30px;
             margin-bottom: 6px;
         }
-        .weather-city { opacity: 0.8; max-width: 90px; overflow: hidden; text-overflow: ellipsis; }
+        .weather-city { 
+            opacity: 0.8; 
+            max-width: 90px; 
+            overflow: hidden; 
+            text-overflow: ellipsis; 
+            cursor: pointer; /* Добавлено: показывает, что можно нажать */
+            border-bottom: 1px dashed transparent;
+            transition: border-color 0.2s, opacity 0.2s;
+        }
+        .weather-city:hover {
+            opacity: 1;
+            border-bottom-color: var(--accent-color);
+        }
         .weather-icon { font-size: 1rem; line-height: 1; }
         .weather-temp { font-weight: 800; }
 
@@ -170,7 +180,6 @@
             opacity: 0 !important; max-height: 0 !important; margin: 0 !important;
         }
 
-        
         .theme-toggle {
             position: absolute; top: 20px; right: 20px;
             background: var(--panel-bg); color: var(--text-color);
@@ -185,7 +194,6 @@
         }
         .theme-toggle:hover { box-shadow: 0 0 20px var(--accent-color); border-color: var(--accent-color); }
 
-        
         .toast-notification {
             position: fixed;
             bottom: 30px;
@@ -217,7 +225,6 @@
             pointer-events: auto;
         }
 
-        
         .main-container {
             display: flex; flex-direction: column; align-items: center;
             width: 100%; max-width: 800px; padding: 20px;
@@ -230,7 +237,6 @@
         body[data-theme="glass"] .logo { text-shadow: 0 4px 10px rgba(255,255,255,0.5); }
         .logo span { display: inline-block; text-shadow: 2px 2px 4px rgba(0,0,0,0.1); }
 
-        
         .search-wrapper {
             width: 100%; display: flex; align-items: center;
             background: var(--input-bg);
@@ -272,7 +278,6 @@
         }
         body[data-theme="glass"] .search-btn:hover { background: rgba(255, 255, 255, 0.2); }
 
-        
         .actions-row {
             display: flex;
             gap: 12px;
@@ -299,7 +304,6 @@
         }
         .pill-btn svg { flex-shrink: 0; }
 
-        
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.2); backdrop-filter: blur(10px);
@@ -327,7 +331,6 @@
         .close-btn:hover { color: var(--accent-color); }
         .modal-body { padding: 20px; overflow-y: auto; flex: 1; }
 
-        
         .bookmarks-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 15px; }
         .bookmark-item {
             display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -387,7 +390,6 @@
         .btn-add { width: 100%; margin-bottom: 20px; background: transparent; border: 2px dashed var(--border-color); color: var(--text-color); }
         .btn-add:hover { border-color: var(--accent-color); color: var(--accent-color); }
 
-        
         .services-list {
             display: flex;
             flex-direction: column;
@@ -450,7 +452,6 @@
             color: var(--text-color); opacity: 0.5;
         }
 
-        
         .continue-reading {
             display: flex;
             align-items: center;
@@ -522,7 +523,6 @@
         }
         .footer-credit:hover { color: var(--accent-color); opacity: 1; text-shadow: 0 0 8px var(--accent-color); }
 
-        /* ================= ZEN подумаю, стоит ли оставлять ================= */
         body.zen-mode .logo,
         body.zen-mode .dynamic-island,
         body.zen-mode .actions-row,
@@ -607,9 +607,9 @@
         <span id="greetingText"></span>
     </div>
 
-    <div class="dynamic-island" id="clockWidget" title="Нажмите для смены формата">
+    <div class="dynamic-island" id="clockWidget" title="Нажмите для смены формата времени">
         <div class="weather-display" id="weatherDisplay">
-            <span class="weather-city" id="weatherCity">Загрузка...</span>
+            <span class="weather-city" id="weatherCity" title="Нажмите, чтобы изменить город">Загрузка...</span>
             <span class="weather-icon" id="weatherIcon">⏳</span>
             <span class="weather-temp" id="weatherTemp">--°</span>
         </div>
@@ -652,7 +652,6 @@
 
     <a href="https://github.com/zloba010" target="_blank" rel="noopener noreferrer" class="footer-credit">проект был написан kizamia</a>
 
-    <!-- ЭКСПРЕСС-ПАНЕЛЬ , не забыть доработать ux/ui, иначе откат к версии панели 4 -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal">
             <div class="modal-header">
@@ -701,7 +700,6 @@
             </div>
             <div class="modal-body">
                 <div class="services-list" id="servicesList">
-                    <!-- Показывается, когда нет прогресса чтения -->
                     <a class="service-card" id="serviceTile" href="/KFWR---Kizami-Free-Web-Reader/" aria-label="Открыть Kizamia Читалка">
                         <div class="service-card-icon" aria-hidden="true">📖</div>
                         <div class="service-card-info">
@@ -762,7 +760,6 @@
     </div>
 
     <script>
-        
         const clockWidget = document.getElementById('clockWidget');
         const timeDisplay = document.getElementById('timeDisplay');
         const dateDisplay = document.getElementById('dateDisplay');
@@ -852,7 +849,6 @@
             }
         }
 
-        
         function updateClock() {
             if (isAnimating) return;
             const now = new Date();
@@ -862,7 +858,10 @@
             timeDisplay.textContent = s;
             dateDisplay.textContent = now.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
         }
-        clockWidget.addEventListener('click', () => {
+        clockWidget.addEventListener('click', (e) => {
+            // Предотвращаем срабатывание, если кликнули по городу
+            if (e.target.closest('.weather-city')) return;
+            
             if (isAnimating) return;
             isAnimating = true;
             clockWidget.classList.add('is-tyk');
@@ -875,25 +874,35 @@
             }, 1000);
         });
 
-        
+        // ================= НОВОЕ: Ручное изменение города =================
+        weatherCity.addEventListener('click', (e) => {
+            e.stopPropagation(); // Чтобы не срабатывал клик по часам
+            const current = localStorage.getItem('troubleTabManualCity') || weatherCity.textContent;
+            const newCity = prompt('Введите ваш город (например: Казань, Екатеринбург):', current === 'Загрузка...' ? '' : current);
+            
+            if (newCity !== null) {
+                const trimmed = newCity.trim();
+                if (trimmed) {
+                    localStorage.setItem('troubleTabManualCity', trimmed);
+                    localStorage.removeItem('troubleTabWeather'); // Сброс кэша для немедленного обновления
+                    weatherCity.textContent = 'Обновление...';
+                    initWeather();
+                } else {
+                    // Если пользователь стёр всё и нажал ОК, сбрасываем на автоопределение
+                    localStorage.removeItem('troubleTabManualCity');
+                    localStorage.removeItem('troubleTabWeather');
+                    initWeather();
+                }
+            }
+        });
+
         function getCityFromTimezone() {
             try {
                 const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
                 const parts = tz.split('/');
-                let city = parts[parts.length - 1] || 'London';
+                let city = parts[parts.length - 1] || 'Moscow';
                 return city.replace(/_/g, ' ').trim();
-            } catch(e) { return 'London'; }
-        }
-
-        function wwoToEmoji(code) {
-            if (code === 113) return '☀️';
-            if (code === 116) return '⛅';
-            if (code === 119 || code === 122) return '☁️';
-            if ([143, 248, 260].includes(code)) return '🌫️';
-            if ([176, 263, 266, 281, 284, 293, 296, 299, 302, 305, 308, 311, 314, 353, 356, 359].includes(code)) return '🌧️';
-            if ([179, 182, 185, 227, 230, 317, 320, 323, 326, 329, 332, 335, 338, 350, 362, 365, 368, 371, 374, 377].includes(code)) return '❄️';
-            if ([200, 386, 389, 392, 395].includes(code)) return '⛈️';
-            return '🌡️';
+            } catch(e) { return 'Moscow'; }
         }
 
         function wmoToEmoji(code) {
@@ -922,14 +931,14 @@
             }
         }
 
-        function applyWeather(city, temp, code, source) {
+        function applyWeather(city, temp, code) {
             weatherCity.textContent = city || '—';
             if (temp === '--' || temp === null || temp === undefined || isNaN(temp)) {
                 weatherTemp.textContent = '--°';
                 weatherIcon.textContent = '🌡️';
             } else {
                 weatherTemp.textContent = `${temp}°`;
-                weatherIcon.textContent = source === 'wttr' ? wwoToEmoji(code) : wmoToEmoji(code);
+                weatherIcon.textContent = wmoToEmoji(code);
             }
         }
 
@@ -937,58 +946,116 @@
             try {
                 const c = JSON.parse(localStorage.getItem('troubleTabWeather') || 'null');
                 if (c && (Date.now() - c.ts < 60 * 60 * 1000)) {
-                    applyWeather(c.city, c.temp, c.code, c.source);
+                    applyWeather(c.city, c.temp, c.code);
                     return true;
                 }
             } catch(e) {}
             return false;
         }
 
-        function saveWeatherCache(city, temp, code, source) {
+        function saveWeatherCache(city, temp, code) {
             try {
-                localStorage.setItem('troubleTabWeather', JSON.stringify({ city, temp, code, source, ts: Date.now() }));
+                localStorage.setItem('troubleTabWeather', JSON.stringify({ city, temp, code, ts: Date.now() }));
             } catch(e) {}
         }
 
-        async function initWeather() {
-            loadWeatherCache();
-            const tzCity = getCityFromTimezone();
+        async function fetchWeatherByCityName(cityName) {
+            const geoUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(cityName)}&count=1&language=ru&format=json`;
+            const geoData = await fetchJSON(geoUrl);
             
-            let wttrData = await fetchJSON(`https://wttr.in/${encodeURIComponent(tzCity)}?format=j1`);
-            if (wttrData && wttrData.current_condition && wttrData.current_condition[0]) {
-                const cur = wttrData.current_condition[0];
-                const temp = parseInt(cur.temp_C, 10);
-                const code = parseInt(cur.weatherCode, 10);
-                let resCity = tzCity;
-                if (wttrData.nearest_area && wttrData.nearest_area[0]) {
-                    resCity = wttrData.nearest_area[0].areaName[0].value;
+            if (geoData && geoData.results && geoData.results.length > 0) {
+                const loc = geoData.results[0];
+                const wUrl = `https://api.open-meteo.com/v1/forecast?latitude=${loc.latitude}&longitude=${loc.longitude}&current=temperature_2m,weather_code&timezone=auto`;
+                const wData = await fetchJSON(wUrl);
+                if (wData && wData.current) {
+                    const temp = Math.round(wData.current.temperature_2m);
+                    const code = wData.current.weather_code;
+                    applyWeather(loc.name, temp, code);
+                    saveWeatherCache(loc.name, temp, code);
+                    return true;
                 }
-                applyWeather(resCity, temp, code, 'wttr');
-                saveWeatherCache(resCity, temp, code, 'wttr');
-                return;
+            }
+            return false;
+        }
+
+        async function initWeather() {
+            // 1. Проверяем кэш (1 час)
+            if (loadWeatherCache()) return;
+
+            // 2. ПРОВЕРКА: Задал ли пользователь город вручную? (Наивысший приоритет)
+            const manualCity = localStorage.getItem('troubleTabManualCity');
+            if (manualCity) {
+                const success = await fetchWeatherByCityName(manualCity);
+                if (success) return;
+                // Если не удалось найти, продолжаем попытки автоопределения
             }
 
+            // 3. Попытка получить координаты через браузер (Geolocation API)
             try {
-                const geoUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(tzCity)}&count=1&language=ru&format=json`;
-                const geoData = await fetchJSON(geoUrl);
-                if (geoData && geoData.results && geoData.results.length > 0) {
-                    const loc = geoData.results[0];
-                    const wUrl = `https://api.open-meteo.com/v1/forecast?latitude=${loc.latitude}&longitude=${loc.longitude}&current=temperature_2m,weather_code`;
+                const geo = await new Promise((resolve, reject) => {
+                    if (!navigator.geolocation) return reject(new Error('Geolocation not supported'));
+                    navigator.geolocation.getCurrentPosition(
+                        (pos) => resolve({ lat: pos.coords.latitude, lon: pos.coords.longitude }),
+                        (err) => reject(err),
+                        { enableHighAccuracy: true, timeout: 8000, maximumAge: 0 }
+                    );
+                });
+
+                let cityName = 'Мой город';
+                try {
+                    const nominatimUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${geo.lat}&lon=${geo.lon}&accept-language=ru&zoom=10`;
+                    const nomData = await fetchJSON(nominatimUrl);
+                    if (nomData && nomData.address) {
+                        const addr = nomData.address;
+                        cityName = addr.city || addr.town || addr.village || addr.state || 'Мой город';
+                    }
+                } catch(e) {}
+
+                const wUrl = `https://api.open-meteo.com/v1/forecast?latitude=${geo.lat}&longitude=${geo.lon}&current=temperature_2m,weather_code&timezone=auto`;
+                const wData = await fetchJSON(wUrl);
+                
+                if (wData && wData.current) {
+                    const temp = Math.round(wData.current.temperature_2m);
+                    const code = wData.current.weather_code;
+                    applyWeather(cityName, temp, code);
+                    saveWeatherCache(cityName, temp, code);
+                    return;
+                }
+            } catch (e) {
+                console.log('Geolocation weather failed, falling back', e);
+            }
+
+            // 4. Фоллбэк: определение по IP (более надёжный, чем часовой пояс)
+            try {
+                const ipData = await fetchJSON('https://ipwho.is/');
+                if (ipData && ipData.city && ipData.latitude && ipData.longitude) {
+                    const wUrl = `https://api.open-meteo.com/v1/forecast?latitude=${ipData.latitude}&longitude=${ipData.longitude}&current=temperature_2m,weather_code&timezone=auto`;
                     const wData = await fetchJSON(wUrl);
                     if (wData && wData.current) {
                         const temp = Math.round(wData.current.temperature_2m);
                         const code = wData.current.weather_code;
-                        applyWeather(loc.name, temp, code, 'openmeteo');
-                        saveWeatherCache(loc.name, temp, code, 'openmeteo');
+                        applyWeather(ipData.city, temp, code);
+                        saveWeatherCache(ipData.city, temp, code);
                         return;
                     }
                 }
-            } catch(e) {}
+            } catch(e) {
+                console.log('IP weather fallback failed', e);
+            }
 
-            applyWeather(tzCity, '--', null, null);
+            // 5. Фоллбэк: определение по часовому поясу (самый неточный)
+            try {
+                const tzCity = getCityFromTimezone();
+                const success = await fetchWeatherByCityName(tzCity);
+                if (success) return;
+            } catch(e) {
+                console.log('Timezone weather fallback failed', e);
+            }
+
+            // 6. Если ничего не сработало
+            applyWeather('Не определено', '--', null);
         }
 
-        
         function applyTheme() {
             const theme = themes[currentThemeIndex];
             document.body.setAttribute('data-theme', theme);
@@ -1014,7 +1081,6 @@
             applyTheme();
         });
 
-        // ================= експерементальная функция. вставка url = пере0од по ссылке. если тект , то поиск.  (URL vs TEXT) =================
         function performSearch() {
             const q = searchInput.value.trim();
             if (!q) return;
@@ -1037,7 +1103,6 @@
         searchInput.addEventListener('keydown', e => { if (e.key === 'Enter') performSearch(); });
         searchEngine.addEventListener('change', () => localStorage.setItem('troubleTabEngine', searchEngine.value));
 
-        // ================= 7. ЭКСПРЕСС-ПАНЕЛЬ =================
         function closeModal() {
             modalOverlay.classList.remove('active');
             setTimeout(() => searchInput.focus(), 300);
@@ -1137,7 +1202,6 @@
         closeServicesBtn.addEventListener('click', closeServices);
         servicesOverlay.addEventListener('click', e => { if (e.target === servicesOverlay) closeServices(); });
 
-        
         let zenTimer;
         const ZEN_TIMEOUT = 300000; // 5 минут
 
@@ -1165,7 +1229,6 @@
         searchInput.addEventListener('input', resetZenTimer);
         searchInput.addEventListener('focus', resetZenTimer);
 
-        
         function resizeCanvas() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
@@ -1367,7 +1430,6 @@
         document.documentElement.addEventListener('mouseleave', () => { mouse.active = false; });
         window.addEventListener('blur', () => { mouse.active = false; });
 
-        
         function resizeLightCanvases() {
             const w = window.innerWidth, h = window.innerHeight;
             [lightCanvas, beamCanvas, shadowCanvas].forEach(c => { c.width = w; c.height = h; });
@@ -1485,7 +1547,6 @@
             drawBeam(beam, obstacles, 1.0);
         }
 
-        
         const KIZAMI_LIB_KEY = 'kizami.library.v1';
         const READER_URL = '/KFWR---Kizami-Free-Web-Reader/';
 
@@ -1513,7 +1574,6 @@
 
             const book = getContinueReadingBook();
 
-            // Есть активная книга с прогрессом → только виджет. Иначе → только карточка. В браузере работать не будет. исправить.
             if (!book){
                 tile.hidden = false;
                 continueEl.hidden = true;
@@ -1561,7 +1621,6 @@
             if (e.key === KIZAMI_LIB_KEY) renderServices();
         });
 
-        
         fLeft.addEventListener('click', () => {
             leftLightOn = !leftLightOn;
             fLeft.classList.toggle('active', leftLightOn);
@@ -1593,7 +1652,6 @@
         });
         setTimeout(() => { updateFlashlightPosition(); refreshLighting(); }, 200);
 
-        
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && servicesOverlay.classList.contains('active')) {
                 closeServices();
